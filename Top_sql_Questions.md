@@ -33,5 +33,6 @@ After Running the above sql script in MYSQL, you will see a Weather table which 
 **Question** -->  Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
 Example : Id = 4 will be one of the output because temperature  on id 4 is greater than temperature on Id = 3 , which is just one day before the date of Id =4. 
 
-*Expected Output* :
-![](paste-the-copied-image-url-here)
+*Expected Output* <br />
+
+![Expected Output](https://github.com/Prashanpt/Top_Sql_Interview_Questions/blob/main/Screenshot%202024-02-07%20233733.png?raw=true)
