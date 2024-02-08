@@ -27,8 +27,11 @@ INSERT INTO weather (id, recordDate, temperature) VALUES
 ``` 
 
   </details>
+a) Before Running the Script make sure You have selected a Database in which you will create Weather table. <br/>
+b) After Running the above sql script in MYSQL, you will see a Weather table which will have 4 rows.
 
-After Running the above sql script in MYSQL, you will see a Weather table which will have 4 rows.
+</p>
+
 
 **Question** -->  Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
 Example : Id = 4 will be one of the output because temperature  on id 4 is greater than temperature on Id = 3 , which is just one day before the date of Id =4. 
