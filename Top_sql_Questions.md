@@ -63,18 +63,27 @@ order by a.recorddate
 <summary> Solution- Click to See the Second Approach  (SQL Query ) </summary> <br/>
    
 ``` sql
-select 
-b.id as id 
-from weather a , weather b
-where datediff( b.recorddate,a.recorddate)=1 and b.temperature > a.temperature 
-order by a.recorddate
+with cte as 
+(   select a.id as aid,
+           b.id as bid,
+           datediff(b.recorddate,a.recorddate) as ddiff
+    from weather a , weather b   -- This is Cross Join 
+    where b.temperature > a.temperature 
+    order by a.recorddate )
+
+select bid as id
+from 
+cte where ddiff=1 ;
+
 ```
 
  </details>
 </p>
 
-
-
+<br/>
+I am using order by because we dont know how the order of the rows will be after doing the cross Join.<br/>
+So order by helps me writing my logic correctly
+<br/>
 
 
 
