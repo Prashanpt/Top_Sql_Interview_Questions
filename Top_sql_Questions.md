@@ -1,11 +1,13 @@
 # Top_Sql_Interview_Questions
 
 **Compiled By** : Prashant Tripathi <br />
-**Linkedin**    : https://www.linkedin.com/in/prashanttripathi786/ 
+**Linkedin**    : https://www.linkedin.com/in/prashanttripathi786/    <br/>
+**Note**        : I have Just Compiled the Questions So that People and get the sql script and Practise on their Local machine. I never claim that these Questions have been created by me. 
+                  
 
 ## Question - 1  
 
-**Tables Needed** : Weather Table 
+**Tables Needed** : `Weather` Table 
 
 <details>
   <summary> Click to See the sql script  needed to create Weather Table </summary>
@@ -27,7 +29,7 @@ INSERT INTO weather (id, recordDate, temperature) VALUES
 ``` 
 <p>
   </details>
-a) Before Running the Script make sure You have selected a Database in which you will create Weather table. <br/>
+a) Before Running the Script make sure You have selected a Database in which you will create `Weather` table. <br/>
 b) After Running the above sql script in MYSQL, you will see a Weather table which will have 4 rows. <br/>
 
 
