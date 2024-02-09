@@ -156,3 +156,52 @@ Question--> What is the Total logged hours by each employee?
 | 11114  | 6                   |
 | 11115  | 8                   |
 
+
+
+
+<details>
+  
+  <summary> Solution- Click to See the First Approach  (SQL Query ) </summary> <br/>
+  
+``` sql
+select empd_id ,sum( hour(timediff(t2,swipe) )) as total_logged_hours
+from 
+(
+select * ,LEAD(swipe) over (order by  empd_id , swipe) as t2
+from clocked_hours
+) as a
+where flag='I'
+group by empd_id
+
+```
+  </details>
+</p>
+<details>
+  
+  <summary> Solution- Click to See the Second Approach  (SQL Query ) </summary> <br/>
+  
+``` sql
+WITH CTE1 AS (select * from clocked_hours
+where flag='I'
+Union
+select * from clocked_hours
+where flag='O'
+)
+,
+
+ cte2 as (
+SELECT * , row_number() over (Partition by flag order by empd_id , swipe ) as rnk
+from cte1 )
+,
+cte3 as (
+select  empd_id , min(swipe) ,max(swipe) ,hour(timediff(max(swipe),min(swipe) )) as hrs
+from cte2
+group by empd_id,rnk )
+
+select empd_id ,sum(hrs) as total_logged_hours
+from cte3
+group by empd_id
+```
+  </details>
+</p>
+
