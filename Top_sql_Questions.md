@@ -28,19 +28,30 @@ INSERT INTO weather (id, recordDate, temperature) VALUES
 <p>
   </details>
 a) Before Running the Script make sure You have selected a Database in which you will create Weather table. <br/>
-b) After Running the above sql script in MYSQL, you will see a Weather table which will have 4 rows.
+b) After Running the above sql script in MYSQL, you will see a Weather table which will have 4 rows. <br/>
 
-</p>
-Weather Table <br/>
 
-![Expected Output](https://github.com/Prashanpt/Top_Sql_Interview_Questions/blob/main/Weather_Table.png)
+<p>
+
+`Weather` Table :
+
+| ID | recorddate | temperature |
+|----|------------|-------|
+| 1  | 2015-01-01 | 10    |
+| 2  | 2015-01-02 | 25    |
+| 3  | 2015-01-03 | 20    |
+| 4  | 2015-01-04 | 30    |
 
 **Question** -->  Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
 Example : Id = 4 will be one of the output because temperature  on id 4 is greater than temperature on Id = 3 , which is just one day before the date of Id =4. 
 
 *Expected Output* <br />
 
-![Expected Output](https://github.com/Prashanpt/Top_Sql_Interview_Questions/blob/main/Screenshot%202024-02-07%20233733.png?raw=true)
+
+| id      |
+|---------|
+|    2    |
+|    4    |
 
 
 
@@ -136,4 +147,12 @@ b) After Running the above sql script in MYSQL, you will see a `Clocked_hours`  
 | 11114 | 15:30:00   | O    |
 | 11115 | 09:30:00   | I    |
 | 11115 | 17:30:00   | O    |
+
+Question--> What is the Total logged hours by each employee?
+
+*Expected Output* 
+| EMD_ID | Total_logged_hours |
+|--------|---------------------|
+| 11114  | 6                   |
+| 11115  | 8                   |
 
