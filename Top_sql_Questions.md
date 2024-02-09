@@ -86,6 +86,54 @@ So order by helps me writing my logic correctly
 <br/>
 
 
+## Question - 2
+
+**Tables Needed** : `Clocked_hours`
+
+<details>
+  <summary> Click to See the sql script  needed to create Clocked_hours Table </summary>
+
+```sql
+create table clocked_hours(
+
+empd_id int,
+
+swipe time,
+
+flag char
+
+);
+
+insert into clocked_hours values
+
+(11114,'08:30','I'),
+
+(11114,'10:30','O'),
+
+(11114,'11:30','I'),
+
+(11114,'15:30','O'),
+
+(11115,'09:30','I'),
+
+(11115,'17:30','O');
+``` 
+<p>
+  </details>
+  
+a) Before Running the Script make sure You have selected a Database in which you will create `Clocked_hours` table. <br/>
+b) After Running the above sql script in MYSQL, you will see a `Clocked_hours`  table which will have 6 rows.
+<br/>
 
 
+ `Clocked_hours` Table :
+ 
+|empd_id| swipe      | flag |
+|-------|------------|------|
+| 11114 | 08:30:00   | I    |
+| 11114 | 10:30:00   | O    |
+| 11114 | 11:30:00   | I    |
+| 11114 | 15:30:00   | O    |
+| 11115 | 09:30:00   | I    |
+| 11115 | 17:30:00   | O    |
 
