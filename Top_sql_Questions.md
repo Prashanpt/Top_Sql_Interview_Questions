@@ -2,7 +2,7 @@
 
 **Compiled By** : Prashant Tripathi <br />
 **Linkedin**    : https://www.linkedin.com/in/prashanttripathi786/    <br/>
-**Note**        : I have Just Compiled the Questions So that People and get the sql script and Practise on their Local machine. I never claim that these Questions have been created by me. 
+**Note**        : I have Just Compiled the Questions So that People can get the sql script and Practise on their Local machine. I never claim that these Questions have been created by me. 
                   
 
 ## Question - 1  
