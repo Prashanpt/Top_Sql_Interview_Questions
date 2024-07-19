@@ -5,7 +5,7 @@
 **Note**        : I have Just Compiled the Questions So that People can get the sql script and Practise on their Local machine. I never claim that these Questions have been created by me. 
                   
 
-## Question - 1  
+## Question - 1   [ Temperature Comparison ]
 
 **Tables Needed** : `Weather` Table 
 
@@ -99,7 +99,7 @@ So order by helps me writing my logic correctly
 <br/>
 
 
-## Question - 2
+## Question - 2  [ Employee Logged Hours ]
 
 **Tables Needed** : `Clocked_hours`
 
@@ -206,4 +206,131 @@ group by empd_id
 ```
   </details>
 </p>
+
+
+
+## Question - 2  [Cinema Seat Availability ]
+
+**Tables Needed** : `Cinema`
+
+
+<details>
+  <summary> Click to See the sql script  needed to create <code> Cinema</code> Table </summary>
+  
+``` sql
+CREATE TABLE cinema (
+    seat_id INT PRIMARY KEY,
+    free int
+);
+delete from cinema;
+INSERT INTO cinema (seat_id, free) VALUES (1, 1);
+INSERT INTO cinema (seat_id, free) VALUES (2, 0);
+INSERT INTO cinema (seat_id, free) VALUES (3, 1);
+INSERT INTO cinema (seat_id, free) VALUES (4, 1);
+INSERT INTO cinema (seat_id, free) VALUES (5, 1);
+INSERT INTO cinema (seat_id, free) VALUES (6, 0);
+INSERT INTO cinema (seat_id, free) VALUES (7, 1);
+INSERT INTO cinema (seat_id, free) VALUES (8, 1);
+INSERT INTO cinema (seat_id, free) VALUES (9, 0);
+INSERT INTO cinema (seat_id, free) VALUES (10, 1);
+INSERT INTO cinema (seat_id, free) VALUES (11, 0);
+INSERT INTO cinema (seat_id, free) VALUES (12, 1);
+INSERT INTO cinema (seat_id, free) VALUES (13, 0);
+INSERT INTO cinema (seat_id, free) VALUES (14, 1);
+INSERT INTO cinema (seat_id, free) VALUES (15, 1);
+INSERT INTO cinema (seat_id, free) VALUES (16, 1);
+
+
+```
+</details>
+
+a) After Running the above sql script in MYSQL, you will see a `Cinema`  table which will have 16 rows.
+
+ `Cinema` Table :
+
+| seat_id | free |
+|---------|------|
+| 1       | 1    |
+| 2       | 0    |
+| 3       | 1    |
+| 4       | 1    |
+| 5       | 1    |
+| 6       | 0    |
+| 7       | 1    |
+| 8       | 1    |
+| 9       | 0    |
+| 10      | 1    |
+| 11      | 0    |
+| 12      | 1    |
+| 13      | 0    |
+| 14      | 1    |
+| 15      | 1    |
+| 16      | 1    |
+
+Question--> Find the Seat id  of Consecutive seats  which are Free. Free is boolean ( 1=Free , 0= Occupied) </br>
+Note - Atleast two Consecutive seats should be there.
+
+
+*Expected Output* 
+| seat_id |
+|---------|
+| 3       |
+| 4       |
+| 5       |
+| 7       |
+| 8       |
+| 14      |
+| 15      |
+| 16      |
+
+
+<details>
+  
+  <summary> Solution- Click to See the First Approach  (SQL Query ) </summary> <br/>
+  
+``` sql
+
+with cte1 as 
+
+(
+select * ,
+lead(free) over( order by seat_id) as next_Seat,
+lag(free) over( order by seat_id) as previous_seat
+
+from cinema)
+select seat_id from cte1
+
+where (free=1 and next_Seat=1) or  (free=1 and previous_seat=1)
+
+
+
+
+```
+  </details>
+
+<details>
+  <summary> Solution- Click to See the Second Approach  (SQL Query ) </summary> <br/>
+  
+``` sql
+
+
+with cte1 as
+(
+select 
+* ,
+lead(free) over (order by seat_id) next_seat,
+lead(seat_id) over (order by seat_id) next_seat_id
+from cinema)
+
+select seat_id as seat_id from cte1 
+where free=1 and next_seat=1
+union
+select next_Seat_id as seat_id from cte1 
+where free=1 and next_seat=1
+
+
+
+```
+  </details>
+
 
