@@ -5,56 +5,72 @@
 **Note**        : I have Just Compiled the Questions So that People can get the sql script and Practise on their Local machine. I never claim that these Questions have been created by me. 
                   
 
-## Question - 1   [ Temperature Comparison ]
+## Question - 1   [ Date Problem 1]
 
-**Tables Needed** : `Weather` Table 
+**Tables Needed** : `Datee` Table 
 
 <details>
-  <summary> Click to See the sql script  needed to create Weather Table </summary>
+  <summary> Click to See the sql script needed to create Datee Table </summary>
 
 ``` sql
-CREATE TABLE weather (
-    id INT PRIMARY KEY,
-    recordDate DATE,
-    temperature INT
+CREATE TABLE Datee (
+    DateColumn DATE
 );
 
--- Insert data into the table
-INSERT INTO weather (id, recordDate, temperature) VALUES
-(1, '2015-01-01', 10),
-(2, '2015-01-02', 25),
-(3, '2015-01-03', 20),
-(4, '2015-01-04', 30);
+INSERT INTO Datee (DateColumn)
+VALUES 
+    ('2025-01-01'),
+    ('2025-01-02'),
+    ('2025-01-03'),
+    ('2025-01-04'),
+    ('2025-01-05'),
+    ('2025-01-06'),
+    ('2025-01-07'),
+    ('2025-01-08'),
+    ('2025-01-09'),
+    ('2025-01-10');
 
 ``` 
 <p>
   </details>
-a) Before Running the Script make sure You have selected a Database in which you will create `Weather` table. <br/>
-b) After Running the above sql script in MYSQL, you will see a Weather table which will have 4 rows. <br/>
+a) Before Running the Script make sure You have selected a Database in which you will create `Datee` table. <br/>
+b) After Running the above sql script in MYSQL, you will see a Datee table which will have 10 rows. <br/>
 
 
 <p>
 
-`Weather` Table :
+`Date` Table :
+| DateColumn   |
+|--------------|
+| 2025-01-01   |
+| 2025-01-02   |
+| 2025-01-03   |
+| 2025-01-04   |
+| 2025-01-05   |
+| 2025-01-06   |
+| 2025-01-07   |
+| 2025-01-08   |
+| 2025-01-09   |
+| 2025-01-10   |
 
-| ID | recorddate | temperature |
-|----|------------|-------|
-| 1  | 2015-01-01 | 10    |
-| 2  | 2015-01-02 | 25    |
-| 3  | 2015-01-03 | 20    |
-| 4  | 2015-01-04 | 30    |
 
-**Question** -->  Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
-Example : Id = 4 will be one of the output because temperature  on id 4 is greater than temperature on Id = 3 , which is just one day before the date of Id =4. 
+### **Question** -->  Write a solution to select only year and month from the datecolumn. Also select the original date column.
+
 
 *Expected Output* <br />
 
-
-| id      |
-|---------|
-|    2    |
-|    4    |
-
+| DateColumn   | NewDate  |
+|--------------|----------|
+| 2025-01-01   | 2025-01 |
+| 2025-01-02   | 2025-01 |
+| 2025-01-03   | 2025-01 |
+| 2025-01-04   | 2025-01 |
+| 2025-01-05   | 2025-01 |
+| 2025-01-06   | 2025-01 |
+| 2025-01-07   | 2025-01 |
+| 2025-01-08   | 2025-01 |
+| 2025-01-09   | 2025-01 |
+| 2025-01-10   | 2025-01 |
 
 
 <details>
@@ -62,11 +78,9 @@ Example : Id = 4 will be one of the output because temperature  on id 4 is great
   <summary> Solution- Click to See the First Approach  (SQL Query ) </summary> <br/>
   
 ``` sql
-select 
-b.id as id 
-from weather a , weather b
-where datediff( b.recorddate,a.recorddate)=1 and b.temperature > a.temperature 
-order by a.recorddate
+select datecolumn,left(datecolumn,7) as Newdate
+from Datee;
+
 ```
   </details>
 </p>
@@ -76,17 +90,12 @@ order by a.recorddate
 <summary> Solution- Click to See the Second Approach  (SQL Query ) </summary> <br/>
    
 ``` sql
-with cte as 
-(   select a.id as aid,
-           b.id as bid,
-           datediff(b.recorddate,a.recorddate) as ddiff
-    from weather a , weather b   -- This is Cross Join 
-    where b.temperature > a.temperature 
-    order by a.recorddate )
+SELECT 
+datecolumn,
+concat(year(datecolumn),'-',format(datecolumn,'MM')) as newdate
 
-select bid as id
-from 
-cte where ddiff=1 ;
+FROM datetable;
+
 
 ```
 
@@ -94,8 +103,10 @@ cte where ddiff=1 ;
 </p>
 
 <br/>
-I am using order by because we dont know how the order of the rows will be after doing the cross Join.<br/>
-So order by helps me writing my logic correctly
+
+we can also use month(datecolumn) but in this case month will come in single digit , but we want the month in double digit that is why we are using
+format function.
+
 <br/>
 
 
@@ -209,7 +220,7 @@ group by empd_id
 
 
 
-## Question - 2  [Cinema Seat Availability ]
+## Question - 3 [Cinema Seat Availability ]
 
 **Tables Needed** : `Cinema`
 
@@ -332,5 +343,241 @@ where free=1 and next_seat=1
 
 ```
   </details>
+
+
+## Question 4 [Window Function Questions ]
+
+Before starting we should KnoW few concepts that is Running Total vs Rolling Total.
+
+The terms **running total** and **rolling total** are often used in analytics and reporting to describe cumulative or moving calculations.
+Here's the difference between the two:
+
+---
+
+### **1. Running Total**
+A **running total** is the cumulative sum of a series of values up to the current point. It keeps adding each new value to the sum of the previous values, starting from the beginning of the series.
+
+#### Key Characteristics:
+- Starts from the first value and continues adding up.
+- Represents the total accumulation at each step.
+- The focus is on the **entire history** up to the current point.
+
+#### Example:
+If you have sales data:
+
+| Day   | Sales | Running Total |
+|-------|-------|---------------|
+| Day 1 | 100   | 100           |
+| Day 2 | 200   | 300           |
+| Day 3 | 150   | 450           |
+| Day 4 | 250   | 700           |
+
+The running total on Day 4 is the sum of all sales from Day 1 to Day 4.
+
+---
+
+### **2. Rolling Total**
+A **rolling total** (also called a **moving total**) calculates the sum of values over a specific time window that moves with each new value. It focuses on the most recent data points, dropping older values as new ones are added.
+
+#### Key Characteristics:
+- Uses a **fixed time period or window** (e.g., last 7 days, last 3 months).
+- The window "rolls" forward as new data is considered.
+- Helps analyze trends within a recent period rather than over the entire history.
+
+#### Example:
+If you have a 3-day rolling total:
+
+| Day   | Sales | Rolling Total (Last 3 Days) |
+|-------|-------|-----------------------------|
+| Day 1 | 100   | 100                         |
+| Day 2 | 200   | 300                         |
+| Day 3 | 150   | 450                         |
+| Day 4 | 250   | 600 (200 + 150 + 250)       |
+| Day 5 | 300   | 700 (150 + 250 + 300)       |
+
+For Day 4, the rolling total is the sum of sales for the last 3 days: Day 2, Day 3, and Day 4.
+
+---
+
+### **Key Differences**
+| Aspect               | Running Total                   | Rolling Total                      |
+|-----------------------|---------------------------------|------------------------------------|
+| **Calculation Basis** | Cumulative from the start.      | Sum of values in a fixed window.  |
+| **Focus**            | Entire history of the data.     | Recent values in a rolling window. |
+| **Use Case**         | Long-term growth analysis.       | Trend or performance over a recent period. |
+
+---
+
+### Use Cases
+- **Running Total**: 
+  - Tracking total revenue, cumulative expenses, or the total number of items sold over time.
+- **Rolling Total**: 
+  - Analyzing short-term trends, such as the last 7 days of sales, or the moving average for stock prices.
+
+## Lets start the window function question practise.
+
+<details>
+  <summary> Click to See the sql script  needed to create <code> Sales </code> Table </summary>
+  
+``` sql
+
+CREATE TABLE Sales (
+    SalesID INT PRIMARY KEY,
+    SalesPerson NVARCHAR(50),
+    SaleDate DATE,
+    Amount DECIMAL(10, 2)
+);
+
+
+INSERT INTO Sales (SalesID, SalesPerson, SaleDate, Amount)
+VALUES 
+(1, 'Charlie', '2024-08-05', 2200.00),
+(2, 'Diana', '2024-08-05', 1750.00),
+(3, 'Charlie', '2024-08-07', 3100.00),
+(4, 'Eve', '2024-08-08', 2800.00),
+(5, 'Diana', '2024-08-09', 4000.00),
+(6, 'Charlie', '2024-08-10', 1800.00),
+(7, 'Eve', '2024-08-10', 2900.00);
+
+
+
+
+
+```
+</details>
+
+
+### Question 5 Find the Sum of sales amount for each salesperson without affecting the Level of detail of the table.
+It means output should contain the original table along with new column 'TotalSales'
+
+*Expected Output*
+| SalesID | SalesPerson | SaleDate   | Amount   | TotalSales |
+|---------|-------------|------------|----------|------------|
+| 1       | Charlie     | 2024-08-05 | 2200.00  | 7100.00    |
+| 3       | Charlie     | 2024-08-07 | 3100.00  | 7100.00    |
+| 6       | Charlie     | 2024-08-10 | 1800.00  | 7100.00    |
+| 5       | Diana       | 2024-08-09 | 4000.00  | 5750.00    |
+| 2       | Diana       | 2024-08-05 | 1750.00  | 5750.00    |
+| 4       | Eve         | 2024-08-08 | 2800.00  | 5700.00    |
+| 7       | Eve         | 2024-08-10 | 2900.00  | 5700.00    |
+
+
+
+<details>
+  <summary> Solution- Click to See the solution (SQL Query ) </summary> <br/>
+  
+``` sql
+
+
+SELECT
+* ,
+sum(amount) over ( partition by salesperson) as TotalSales
+
+FROM sales
+
+
+
+```
+  </details>
+
+Note : Since we are not using order by that is why we are not getting cumulative/Rolling/Running Sales. It is summing all the amount values in each window.
+
+### Question 6 Write a query to calculate the Running sales amount for each salesperson over time.
+It means we need cumulative sum over the time.
+
+Note - Use the Above script to create the sales table.
+
+*Expected Output*
+| SalesID | SalesPerson | SaleDate   | Amount   | TotalSales |
+|---------|-------------|------------|----------|------------|
+| 1       | Charlie     | 2024-08-05 | 2200.00  | 2200.00    |
+| 3       | Charlie     | 2024-08-07 | 3100.00  | 5300.00    |
+| 6       | Charlie     | 2024-08-10 | 1800.00  | 7100.00    |
+| 2       | Diana       | 2024-08-05 | 1750.00  | 1750.00    |
+| 5       | Diana       | 2024-08-09 | 4000.00  | 5750.00    |
+| 4       | Eve         | 2024-08-08 | 2800.00  | 2800.00    |
+| 7       | Eve         | 2024-08-10 | 2900.00  | 5700.00    |
+
+
+
+<details>
+  <summary> Solution- Click to See the solution (SQL Query ) </summary> <br/>
+  
+``` sql
+
+SELECT
+*,
+sum(amount) over ( partition by salesperson order by saledate) as TotalSales
+
+FROM sales
+
+
+```
+  </details>
+
+### Question 7 Write a query to calculate the Rolling sales amount over time without including the Sales person over time.
+Find rolling sum based only on datecolumn. We need to see sales performance over time.
+Note: This Question is tricky because saledate column has repating date due to which we will not get correct answer.
+Knowledge of FRAME CLAUSE is important to solve this question.
+
+*Expected output*
+| SalesID | SaleDate   | TotalSales |
+|---------|------------|------------|
+| 1       | 2024-08-05 | 2200.00    |
+| 2       | 2024-08-05 | 3950.00    |
+| 3       | 2024-08-07 | 7050.00    |
+| 4       | 2024-08-08 | 9850.00    |
+| 5       | 2024-08-09 | 13850.00   |
+| 6       | 2024-08-10 | 15650.00   |
+| 7       | 2024-08-10 | 18550.00   |
+
+In this case, we will consider 4 different scenarios , because here we can see that date values is repeating.
+
+
+<details>
+  <summary> Solution- Click to See the solution (SQL Query ) </summary> <br/>
+  
+``` sql
+
+
+SELECT
+salesid,
+saledate,
+sum(amount) over (order by saledate ) as TotalSales ,
+sum(amount) over (order by saledate Range between unbounded preceding and current row)  TotalSales2,
+sum(amount) over (order by saledate Rows between unbounded preceding and current row)  TotalSales3,
+sum(amount) over (order by salesid,saledate Rows between unbounded preceding and current row) totalsales4
+
+
+FROM sales
+
+
+```
+  </details>
+
+  *Our Code Ouput*
+
+  | SalesID | SaleDate   | TotalSales | TotalSales2 | TotalSales3 | TotalSales4 |
+|---------|------------|------------|-------------|-------------|-------------|
+| 1       | 2024-08-05 | 3950.00    | 3950.00     | 2200.00     | 2200.00     |
+| 2       | 2024-08-05 | 3950.00    | 3950.00     | 3950.00     | 3950.00     |
+| 3       | 2024-08-07 | 7050.00    | 7050.00     | 7050.00     | 7050.00     |
+| 4       | 2024-08-08 | 9850.00    | 9850.00     | 9850.00     | 9850.00     |
+| 5       | 2024-08-09 | 13850.00   | 13850.00    | 13850.00    | 13850.00    |
+| 6       | 2024-08-10 | 18550.00   | 18550.00    | 15650.00    | 15650.00    |
+| 7       | 2024-08-10 | 18550.00   | 18550.00    | 18550.00    | 18550.00    |
+
+
+The last two column gives us the correct answer.The reason we are getting different answer lies in the FRAME CLAUSE concept which comes 
+after order by clause.
+The first and second column gives us same result because both are same.
+In first frame clause is hidden.
+In second the frame clause is written which is nothing but the defualt frame clause which was hidden
+In third we have replaced the range with rows to get the right answer. why? Because Range works on the actual values inside the column but rows work on the index number of the row.
+so when date values is repeating, range mode groups the same values which comes in the saleddate column.
+There is one more solution to that, which is the last column, we can use unique combinations in the order by clause.
+since we are using both saledate and sales id  which is  a unique values in this case it is not grouping the values.
+
+
 
 
