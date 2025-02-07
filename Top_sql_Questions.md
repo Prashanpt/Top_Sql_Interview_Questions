@@ -579,5 +579,71 @@ There is one more solution to that, which is the last column, we can use unique 
 since we are using both saledate and sales id  which is  a unique values in this case it is not grouping the values.
 
 
+### Question - 8  [Find unique Pair of Train using Lexicogrphical technique]
 
+
+**Tables Needed** : `TrainRoutes`
+
+
+<details>
+  <summary> Click to See the sql script  needed to `TrainRoutes` Table </summary>
+  
+``` sql
+CREATE TABLE TrainRoutes (
+    City1 VARCHAR(100),
+    City2 VARCHAR(100),
+    Distance INT,
+    TrainName VARCHAR(100)
+);
+
+-- Insert the data into the table
+INSERT INTO TrainRoutes (City1, City2, Distance, TrainName) VALUES
+('delhi', 'agra', 300, 'vande bharat'),
+('agra', 'delhi', 300, 'vande bharat'),
+('delhi', 'kolkata', 1000, 'shatabdi'),
+('delhi', 'kashmir', 900, 'rajdhani'),
+('kashmir', 'delhi', 900, 'rajdhani');
+
+
+
+```
+</details>
+
+Question : Find The unique Pair of Trains from the list. we can see agra and delhi is repeated twice , but we want unique value.
+we also want all other train routes row which are already unique , like delhi - kolkata route.
+
+*Expected Output*
+
+| City1    | City2   | Distance | TrainName     |
+|----------|---------|----------|---------------|
+| delhi    | agra    | 300      | vande bharat  |
+| kashmir  | delhi   | 900      | rajdhani      |
+| kolkata  | delhi   | 1000     | shatabdi      |
+
+
+<details>
+  <summary> Solution- Click to See the solution (SQL Query ) </summary> <br/>
+  
+``` sql
+
+With traindet
+as
+(
+
+select 
+case 
+when city1>city2 then city1+','+city2 
+else city2+','+city1 
+end as city , Distance, Trainname
+
+from TrainRoutes
+)
+select left(city,CHARINDEX(',',city)-1) as city1,
+Right(city,len(city)-CHARINDEX(',',city)) as city2,
+Distance,
+Trainname from traindet
+group by city,Distance,Trainname
+
+```
+  </details>
 
