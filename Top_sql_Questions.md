@@ -622,7 +622,7 @@ we also want all other train routes row which are already unique , like delhi - 
 
 
 <details>
-  <summary> Solution- Click to See the solution (SQL Query ) </summary> <br/>
+  <summary> Solution- Click to See the solution using Lexography method (SQL Query ) </summary> <br/>
   
 ``` sql
 
@@ -647,3 +647,24 @@ group by city,Distance,Trainname
 ```
   </details>
 
+
+<details>
+  <summary> Solution- Click to See the solution using joins and row number (SQL Query ) </summary> <br/>
+  
+``` sql
+
+
+with cte as 
+(
+
+select * , row_number() over ( order by distance) as id
+from TrainRoutes
+)
+
+select a.city1,a.city2,a.Distance,a.TrainName 
+from cte as a left join cte as b on a.city1=b.city2 and a.city2=b.city1 
+where a.id < b.id or b.id is null
+
+
+```
+  </details>
